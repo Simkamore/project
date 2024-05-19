@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct s_list {
+  int data;
+  s_list* next;
+    s_list* back;
+} t_list;
+
+t_list* create_node(int _value = 0) {
+    t_list* node = (t_list*)malloc(sizeof(t_list));
+
+    node->data = _value;
+    node->next = NULL;
+    node->back = NULL;
+
+    return node;
+}
+
+void push_list(t_list** list, int _value, int N) {
+    t_list* node = create_node(_value);
+    t_list* tmp = *list;
+    if (N % 2 == 0) {
+        while (tmp->next != NULL) {
+            tmp = tmp->next;
+        }
+        tmp->next = node;
+        tmp->back = (*list)->back;
+    }
+    else {
+        while (tmp->back != NULL) {
+            tmp = tmp->back;
+        }
+        tmp->back = node;
+    }
+}
+
+void print_list_next(t_list* head) {
+    if (head == NULL) {
+        return;
+    }
+    printf("%d ", head->data);
+    if (head->next != NULL) {
+        print_list_next(head->next);
+    }
+}
+
+void print_list_back(t_list* head) {
+    if (head == NULL) {
+        return;
+    }
+    printf("%d ", head->data);
+    if (head->back != NULL) {
+        print_list_back(head->back);
+    }
+}
+
+int main() {
+    t_list* S = create_node(NULL);
+    int N = 0, data;
+
+    while (true) {
+        scanf_s("%d", &data);
+        if (data == 0) break;
+        push_list(&S, data, N);
+        N++;
+    }
+
+    if (N % 2 != 0) {
+        t_list* tmp = S;
+        S = S->next;
+        delete tmp;
+    }
+
+    print_list_next(S->next);
+    printf("\n");
+    print_list_back(S->back);
+  return 0;
+}

@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int count_multiples_of_seven(int* array, int size) {
+    if (size == 0) {
+        return 0;
+    } else {
+        int count = count_multiples_of_seven(array + 1, size - 1);
+        if (*array % 7 == 0) {
+            return count + 1;
+        } else {
+            return count;
+        }
+    }
+}
+
+int main() {
+    int size;
+    printf("Введите размер массива: ");
+    scanf("%d", &size);
+
+    if (size <= 0) {
+        printf("Размер массива должен быть больше 0.\n");
+        return 1;
+    }
+
+    int* array = (int*)malloc(size * sizeof(int));
+    if (array == NULL) {
+        printf("Ошибка выделения памяти.\n");
+        return 1;
+    }
+
+    // Ввод массива с клавиатуры
+    printf("Введите элементы массива:\n");
+    for (int i = 0; i < size; i++) {
+        scanf("%d", &array[i]);
+    }
+
+    printf("Массив: ");
+    for (int i = 0; i < size; i++) {
+        printf("%d ", array[i]);
+    }
+    printf("\n");
+
+    int count = count_multiples_of_seven(array, size);
+    printf("Количество чисел, значения которых кратно 7: %d\n", count);
+
+    free(array);
+
+    return 0;
+}

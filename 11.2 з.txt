@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <math.h>
+
+// Рекурсивная функция для вычисления суммы ряда
+double recursive_series_sum(double x, int n, double term, double sum, double precision, int* num_terms) 
+{
+    sum += term;// Добавляем текущий член к общей сумме
+    (*num_terms)++;// Увеличиваем счетчик количества членов ряда
+
+    // Вычисляем следующий член ряда
+    double next_term = term * x * x / (2 * n * (2 * n + 1));
+
+    // Проверяем, является ли следующий член меньше заданной точности
+    if (fabs(next_term) < precision) 
+    {
+        return sum;// Если следующий член достаточно мал, возвращаем сумму
+    }
+
+    // Рекурсивный вызов функции для вычисления следующего члена ряда
+    return recursive_series_sum(x, n + 1, next_term, sum, precision, num_terms);
+}
+
+int main() 
+{
+    double x = 1.7;
+    double E = pow(10, -3);
+    int num_terms = 0;// Счетчик количества членов ряда
+
+    // Начальный член ряда
+    double initial_term = x;
+
+    // Вызов рекурсивной функции для вычисления суммы ряда
+    double series_sum = recursive_series_sum(x, 1, initial_term, 0.0, E, &num_terms);
+
+    // Использование стандартной библиотечной функции для сравнения суммы ряда
+    double library_value = sinh(x);
+
+    printf("Вычисленное значение суммы ряда: %f\n", series_sum);
+    printf("Количество членов ряда, вошедших в сумму: %d\n", num_terms);
+    printf("Значение, полученное с помощью библиотечной функции: %f\n", library_value);
+
+    // Проверяем близость результатов
+    printf("Результаты %s достаточно близки.\n", fabs(series_sum - library_value) < E ? "совпадают," : "не совпадают,");
+
+    return 0;
+}

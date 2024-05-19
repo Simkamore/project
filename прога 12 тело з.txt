@@ -1,0 +1,29 @@
+main12.c
+// #include <myfunc.h>
+#include "zagolovok12.h"
+
+int main() {
+    int n, k1 = 0, k2 = 0;
+    printf("Введите число треугольников: ");
+    scanf("%d", &n);
+
+    Triangle triangles[n];
+
+    for (int i = 0; i < n; i++) {
+        printf("Введите стороны треугольников %d (a b c): ", i + 1);
+        scanf("%f %f %f", &triangles[i].a, &triangles[i].b, &triangles[i].c);
+
+        if (isEquilateral(triangles[i])) {
+            k1++;
+        }
+
+        if (isRightAngled(triangles[i])) {
+            k2++;
+        }
+    }
+
+    printf("Число равносторонних треугольников: %d\n", k1);
+    printf("Число прямоугольных треугольников: %d\n", k2);
+
+    return 0;
+}
